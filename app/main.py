@@ -1,7 +1,8 @@
 # app/main.py
 
 from fastapi import FastAPI, Depends
-from app import database, models, schemas  # ✅ 이 줄이 반드시 있어야 함
+from app.database import database, models, schemas
+  # ✅ 이 줄이 반드시 있어야 함
 from app.auth import routes as auth_routes
 from app.auth.jwt_handler import get_current_user
 

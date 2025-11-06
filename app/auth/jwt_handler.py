@@ -4,7 +4,8 @@ from jose import JWTError, jwt
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
-from app import database, models
+from app.database import database
+from app.database import models
 
 SECRET_KEY = "test_secret_key"
 ALGORITHM = "HS256"

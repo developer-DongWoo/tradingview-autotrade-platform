@@ -2,7 +2,8 @@
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from app import database, schemas
+from app.database import database
+from app.database import schemas
 from app.auth.jwt_handler import get_current_user
 from app.auth import service
 

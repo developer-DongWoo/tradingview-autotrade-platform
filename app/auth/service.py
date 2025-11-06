@@ -2,7 +2,8 @@
 from datetime import timedelta
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from app import models, schemas, utils
+from app import utils
+from app.database import models, schemas
 from app.auth.jwt_handler import create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
 
 

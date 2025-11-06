@@ -1,7 +1,9 @@
 # app/tests/conftest.py
 import os
 import pytest
-from app import database, models
+from app.database import database
+from app.database import models
+
 
 @pytest.fixture(scope="function", autouse=True)
 def setup_and_teardown_db():
