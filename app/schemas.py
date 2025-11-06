@@ -1,12 +1,23 @@
-from pydantic import BaseModel
+#app/schemas.py
 
+from pydantic import BaseModel, EmailStr, Field, validator
+
+# 회원가입 요청용
 class UserCreate(BaseModel):
-    username: str
-    password: str
+    email: EmailStr = Field(..., description="이메일 형식의 아이디")
+    password: str = Field(..., min_length=8, max_length=50)
 
+    @validator("password")
+    def validate_password(cls, v):
+        if not any(c.isdigit() for c in v) or not any(c.isalpha() for c in v):
+            raise ValueError("비밀번호에는 숫자와 문자가 모두 포함되어야 합니다.")
+        return v
+
+
+# 회원가입 응답용
 class UserResponse(BaseModel):
     id: int
-    username: str
+    email: EmailStr
 
     class Config:
-        orm_mode = True
+        from_attributes = True

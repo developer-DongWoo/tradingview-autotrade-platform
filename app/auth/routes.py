@@ -1,3 +1,5 @@
+#app/auth/routes.py
+
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
@@ -19,4 +21,5 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 @router.post("/login")
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    # OAuth2PasswordRequestForm에는 username 필드가 기본 제공되므로 email로 대체
     return service.login_user(db, form_data.username, form_data.password)
