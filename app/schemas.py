@@ -1,5 +1,5 @@
 # app/schemas.py
-from pydantic import BaseModel, EmailStr, Field, field_validator
+from pydantic import BaseModel, EmailStr, Field, field_validator, ConfigDict
 
 class UserCreate(BaseModel):
     email: EmailStr = Field(..., description="이메일 형식의 아이디")
@@ -12,13 +12,12 @@ class UserCreate(BaseModel):
         return v
 
 
-
 class UserResponse(BaseModel):
     id: int
     email: EmailStr
 
-    class Config:
-        from_attributes = True
+    # ✅ Pydantic v2 호환 설정
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserUpdate(BaseModel):
