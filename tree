@@ -3,9 +3,8 @@ app/
 ├─ database.py
 ├─ models.py
 ├─ schemas.py
-├─ utils.py
 └─ auth/
-    ├─ __init__.py
-    ├─ routes.py      # 엔드포인트 (API)
-    ├─ service.py     # 비즈니스 로직 (함수)
-    └─ jwt_handler.py # JWT 생성·검증 로직
+   ├─__init__.py
+   ├─ routes.py
+   ├─ service.py
+   └─ jwt_handler.py

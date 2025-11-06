@@ -1,8 +1,6 @@
-#app/schemas.py
-
+# app/schemas.py
 from pydantic import BaseModel, EmailStr, Field, validator
 
-# 회원가입 요청용
 class UserCreate(BaseModel):
     email: EmailStr = Field(..., description="이메일 형식의 아이디")
     password: str = Field(..., min_length=8, max_length=50)
@@ -14,10 +12,13 @@ class UserCreate(BaseModel):
         return v
 
 
-# 회원가입 응답용
 class UserResponse(BaseModel):
     id: int
     email: EmailStr
 
     class Config:
         from_attributes = True
+
+
+class UserUpdate(BaseModel):
+    new_password: str = Field(..., min_length=8, max_length=50)
