@@ -32,16 +32,18 @@ def login_user(db: Session, email: str, password: str):
 
 
 # ✅ 비밀번호 변경
-def update_user(db: Session, user: models.User, new_password: str):
-    hashed_pw = utils.hash_password(new_password)
-    user.hashed_password = hashed_pw
+def update_user(db, user, new_password):
+    user.hashed_password = utils.hash_password(new_password)
+    merged_user = db.merge(user)  # ✅ 세션 병합
     db.commit()
-    db.refresh(user)
-    return user
+    db.refresh(merged_user)
+    return merged_user
+
 
 
 # ✅ 회원탈퇴
-def delete_user(db: Session, user: models.User):
-    db.delete(user)
+def delete_user(db, user):
+    merged_user = db.merge(user)
+    db.delete(merged_user)
     db.commit()
-    return {"message": "계정이 삭제되었습니다."}
+    return {"message": "계정이 삭제되었습니다."}  # ✅ 한국어로 수정
