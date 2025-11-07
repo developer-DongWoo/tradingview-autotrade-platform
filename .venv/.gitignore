@@ -1,2 +1,78 @@
-# Created by venv; see https://docs.python.org/3/library/venv.html
-*
+# ==========================
+# 🐍 Python (FastAPI backend)
+# ==========================
+
+# 가상환경
+.venv/
+venv/
+ENV/
+env/
+
+# Python 캐시 및 임시파일
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log
+
+# pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+
+# FastAPI 실행 로그
+*.pid
+*.json
+*.log
+
+# Database (SQLite 등)
+app/database/users.db
+
+# ==========================
+# 🌐 Node / Vue.js frontend
+# ==========================
+
+# node_modules
+frontend/node_modules/
+frontend/.vite/
+frontend/.nuxt/
+frontend/.output/
+frontend/dist/
+frontend/build/
+
+# 환경변수 파일
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+
+# IDE / Editor 설정
+.vscode/
+.idea/
+.DS_Store
+
+# ==========================
+# 🧾 Docs / Personal notes
+# ==========================
+docs/plan.txt
+notes.txt
+
+# ==========================
+# 🚀 Build & deploy artifacts
+# ==========================
+dist/
+build/
+*.tar.gz
+*.zip
+*.bak
+*.tmp
+
+# ==========================
+# ⚙️ OS / Misc
+# ==========================
+Thumbs.db
+ehthumbs.db
+Desktop.ini

@@ -1,0 +1,120 @@
+🧭 Tradingview Autotrade Platform
+
+트레이딩뷰 웹훅 기반 자동매매 플랫폼
+거시경제 지표 대시보드 + 사용자 맞춤형 봇 관리 서비스
+
+📌 프로젝트 개요
+
+이 프로젝트는 FastAPI + Vue.js 기반의 자동매매 웹 플랫폼으로,
+사용자가 트레이딩뷰 웹훅을 이용해 봇을 생성·관리·운용할 수 있도록 설계되었습니다.
+또한 홈화면에서는 거시경제 지표를 시각화하여 사용자 유입을 유도하고,
+대시보드에서는 개인별 봇 성과와 경제 흐름을 한눈에 볼 수 있습니다.
+
+⚙️ 기술 스택
+구분	기술
+Frontend	Vue.js 3 (Vite), Pinia, Axios, TailwindCSS, Chart.js
+Backend	FastAPI, SQLAlchemy, SQLite → (PostgreSQL 예정)
+Auth	JWT 기반 인증 (회원가입, 로그인, 토큰 인증)
+Infra (추후)	Nginx, Docker, GitHub Actions (배포 자동화)
+🧱 주요 페이지 및 기능
+페이지	URL	주요 기능
+🏠 홈화면 (Home)	/	경제지표 시각화, 서비스 소개, CTA
+🔐 로그인 (Login)	/login	JWT 로그인, 토큰 저장 및 세션 유지
+🧾 회원가입 (Register)	/register	이메일 중복검사 및 사용자 등록
+🔑 비밀번호 찾기 (Find Password)	/find-password	이메일 재설정 기능
+💬 게시판 (Board)	/board	CRUD, 좋아요, 조회수 (FastAPI 연동)
+📊 대시보드 (Dashboard)	/dashboard	봇 통계 및 경제지표 차트 표시
+🤖 웹훅 봇 관리 (Bots)	/bots	봇 생성, 수정, 삭제, 테스트 실행
+👤 내 정보 관리 (Profile)	/profile	비밀번호 변경, 구독 정보 확인
+💳 결제 (Billing)	/billing	Stripe / Toss Payments API 연동 (추후)
+🧩 프론트엔드 구조
+frontend/
+├── src/
+│   ├── assets/
+│   ├── components/
+│   │   ├── Header.vue
+│   │   ├── Footer.vue
+│   │   ├── Card.vue
+│   │   ├── ChartBox.vue
+│   │   ├── Button.vue
+│   │   ├── Input.vue
+│   │   └── BotItem.vue
+│   ├── views/
+│   │   ├── Home.vue
+│   │   ├── Login.vue
+│   │   ├── Register.vue
+│   │   ├── Board.vue
+│   │   ├── Dashboard.vue
+│   │   ├── Bots.vue
+│   │   ├── Profile.vue
+│   │   └── Billing.vue
+│   ├── router/
+│   │   └── index.js
+│   ├── store/
+│   │   └── user.js
+│   ├── App.vue
+│   └── main.js
+
+🗄️ 백엔드 구조
+app/
+├── main.py
+├── utils.py
+├── database/
+│   ├── __init__.py
+│   ├── database.py
+│   ├── models.py
+│   ├── schemas.py
+│   └── users.db
+├── auth/
+│   ├── routes.py
+│   ├── service.py
+│   └── jwt_handler.py
+├── board/
+│   ├── routes.py
+│   ├── service.py
+│   ├── schemas.py
+│   └── models.py
+├── webhook/
+│   ├── routes.py
+│   ├── service.py
+│   ├── schemas.py
+│   └── models.py
+├── tests/
+│   ├── test_auth.py
+│   ├── test_board.py
+│   └── conftest.py
+
+💡 홈화면(경제지표 대시보드) 설계 아이디어
+
+“Bloomberg Lite” 컨셉 – 실시간 시장 데이터로 유입 유도
+
+구역	내용
+상단 배너	서비스 소개 문구 + CTA (회원가입 유도)
+중앙 지표 카드	SP500, NASDAQ, 금, 달러, 금리, M2 등
+하단 뉴스 요약	경제 뉴스 API / RSS 연동 (선택사항)
+Footer	저작권, 이용약관, 개인정보처리방침 등
+🧭 개발 단계 로드맵
+단계	목표	세부 내용
+1단계	Vue 기본 구조 세팅	Router + Header/Footer 구성
+2단계	Auth 연동	로그인/회원가입 + JWT 토큰
+3단계	게시판 완성	Axios로 CRUD 연결
+4단계	홈화면 시각화	경제지표 차트 및 카드형 UI
+5단계	봇 관리 페이지	CRUD + 상태 토글 + 실시간 로그
+6단계	결제 및 구독화면	Stripe / Toss API
+7단계	배포 및 CI/CD 구축	Docker + Nginx + GitHub Actions
+🧱 개발 철학
+
+단순한 “웹사이트”가 아닌,
+“투자자의 신뢰를 주는 자동매매 플랫폼”
+
+데이터는 신뢰성 있게, UI는 단순하게.
+
+성능보다 일관성을 우선한다.
+
+사용자 경험(UX)은 직관적이고 반응성 있게.
+
+📄 License
+
+MIT License
+© 2025. Kang Dong-woo All rights reserved.
+
