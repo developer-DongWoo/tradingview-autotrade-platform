@@ -1,65 +1,64 @@
 <template>
-  <div class="option-tile">
+  <div 
+    class="option-tile" 
+    :style="{ backgroundColor: boxColor, borderColor: borderColor }"
+    @click="emit('openModal', name)"
+  >
     <h3>{{ name }}</h3>
-    <p class="ratio" :style="{ color: ratioColor }">
-      📊 Put/Call Ratio: {{ putCallRatio }}
-    </p>
+    <p class="ratio">📊 Put/Call Ratio: {{ putCallRatio }}</p>
     <p>IV: {{ iv }}%</p>
+    <p>OI Δ: 
+      <span :class="oiDelta >= 0 ? 'positive' : 'negative'">
+        {{ oiDelta > 0 ? '+' : '' }}{{ oiDelta }}%
+      </span>
+    </p>
     <p>📈 추세: {{ trend }}</p>
   </div>
 </template>
 
 <script setup>
-import { computed } from "vue"  // ✅ 반드시 세미콜론 포함
+import { computed } from "vue"
 
 const props = defineProps({
   name: String,
   putCallRatio: Number,
   iv: Number,
+  oiDelta: Number,
   trend: String,
-});
+})
 
-const ratioColor = computed(() => {
-  if (props.putCallRatio > 1) return "#ff003c"; // 하락 우위
-  if (props.putCallRatio < 0.8) return "#00f5ff"; // 상승 우위
-  return "#ffaa00"; // 중립
-});
+const emit = defineEmits(["openModal"])
+
+const boxColor = computed(() => {
+  const ratio = props.putCallRatio
+  if (ratio > 1.0) return "rgba(255, 0, 60, 0.15)"
+  if (ratio < 0.8) return "rgba(0, 245, 255, 0.15)"
+  return "rgba(255, 200, 0, 0.08)"
+})
+
+const borderColor = computed(() => {
+  const ratio = props.putCallRatio
+  if (ratio > 1.0) return "rgba(255, 0, 60, 0.6)"
+  if (ratio < 0.8) return "rgba(0, 245, 255, 0.6)"
+  return "rgba(255, 200, 0, 0.4)"
+})
 </script>
 
 <style scoped>
 .option-tile {
-  background: linear-gradient(145deg, #0a0a0a, #000);
-  border: 1px solid rgba(0, 245, 255, 0.4); /* ✅ 테두리 더 진하게 */
+  border: 1.5px solid rgba(0, 245, 255, 0.3);
   border-radius: 12px;
   padding: 20px;
   text-align: center;
-  width: 100%; /* ✅ 고정폭 대신 부모 grid에 맞게 */
-  max-width: 260px; /* ✅ 너무 넓어지지 않게 제한 */
-  box-shadow: 0 0 15px rgba(0, 245, 255, 0.15); /* ✅ 은은한 네온 효과 */
+  width: 250px;
+  box-shadow: 0 0 12px rgba(0, 245, 255, 0.1);
   transition: all 0.3s ease;
+  backdrop-filter: blur(3px);
+  animation: fadeUp 0.8s ease forwards;
+  cursor: pointer;
 }
-
 .option-tile:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 25px rgba(0, 245, 255, 0.4); /* ✅ hover시 빛 확산 */
-  border-color: rgba(0, 245, 255, 0.8);
-}
-
-h3 {
-  color: #00f5ff;
-  margin-bottom: 10px;
-  font-size: 18px;
-  letter-spacing: 0.5px;
-}
-
-p {
-  color: #fff;
-  margin: 5px 0;
-}
-
-.ratio {
-  font-weight: bold;
+  transform: scale(1.04);
+  box-shadow: 0 0 25px rgba(0, 245, 255, 0.3);
 }
 </style>
-
-
