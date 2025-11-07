@@ -1,11 +1,16 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, func
+# app/board/models.py
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, func
+from sqlalchemy.orm import relationship
 from app.database.database import Base
 
 class Board(Base):
-    __tablename__ = "boards"
+    __tablename__ = "board"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(200), nullable=False)
-    content = Column(Text, nullable=False)
-    author = Column(String(100), nullable=False)
+    title = Column(String, nullable=False)
+    content = Column(String, nullable=False)
+    author_id = Column(Integer, ForeignKey("users.id"))
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+    author = relationship("User", back_populates="posts")

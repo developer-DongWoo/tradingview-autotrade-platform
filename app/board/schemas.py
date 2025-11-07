@@ -1,17 +1,23 @@
-from pydantic import BaseModel, Field
+# app/board/schemas.py
+from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime
 
 class BoardBase(BaseModel):
-    title: str = Field(..., example="첫 번째 게시글")
-    content: str = Field(..., example="내용을 입력하세요")
-    author: str = Field(..., example="dongwoo")
+    title: str = Field(..., json_schema_extra={"example": "첫 번째 게시글"})
+    content: str = Field(..., json_schema_extra={"example": "내용을 입력하세요"})
 
 class BoardCreate(BoardBase):
     pass
 
+class BoardUpdate(BoardBase):
+    pass
+
+# app/board/schemas.py
 class BoardResponse(BoardBase):
     id: int
-    created_at: datetime
+    author: str | None = None  # ✅ None 허용
+    created_at: datetime | None = None
+    updated_at: datetime | None = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
+

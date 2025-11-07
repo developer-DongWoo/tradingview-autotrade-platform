@@ -1,28 +1,34 @@
-from fastapi import APIRouter, Depends, HTTPException
+# app/board/routes.py
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from app.database.database import get_db
+from typing import List
 from app.board import service, schemas
+from app.database.database import get_db
+from app.auth.jwt_handler import get_current_user
 
 router = APIRouter(prefix="/board", tags=["Board"])
 
 @router.post("/", response_model=schemas.BoardResponse)
-def create_board(post: schemas.BoardCreate, db: Session = Depends(get_db)):
-    return service.create_post(db, post)
+def create_post(
+    post: schemas.BoardCreate,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    return service.create_post(db, post, current_user.id)
 
-@router.get("/", response_model=list[schemas.BoardResponse])
-def list_boards(db: Session = Depends(get_db)):
+
+@router.get("/", response_model=List[schemas.BoardResponse])
+def get_posts(db: Session = Depends(get_db)):
     return service.get_all_posts(db)
 
 @router.get("/{post_id}", response_model=schemas.BoardResponse)
-def read_board(post_id: int, db: Session = Depends(get_db)):
-    post = service.get_post_by_id(db, post_id)
-    if not post:
-        raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다.")
-    return post
+def get_post(post_id: int, db: Session = Depends(get_db)):
+    return service.get_post(db, post_id)
+
+@router.put("/{post_id}", response_model=schemas.BoardResponse)
+def update_post(post_id: int, post: schemas.BoardUpdate, db: Session = Depends(get_db), current_user=Depends(get_current_user)):
+    return service.update_post(db, post_id, post, current_user.id)
 
 @router.delete("/{post_id}")
-def delete_board(post_id: int, db: Session = Depends(get_db)):
-    success = service.delete_post(db, post_id)
-    if not success:
-        raise HTTPException(status_code=404, detail="삭제할 게시글이 없습니다.")
-    return {"message": "게시글이 삭제되었습니다."}
+def delete_post(post_id: int, db: Session = Depends(get_db), current_user=Depends(get_current_user)):
+    return service.delete_post(db, post_id, current_user.id)
