@@ -1,13 +1,19 @@
-import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
+import { createRouter, createWebHistory } from "vue-router"
+
+// 페이지 import
+import IntroPage from "@/pages/IntroPage.vue"
+import LoginPage from "@/pages/LoginPage.vue"
+import OptionConsole from "@/pages/OptionConsole.vue" // ✅ 추가
 
 const routes = [
-  { path: "/", component: HomeView },
-];
+  { path: "/", name: "Intro", component: IntroPage },
+  { path: "/login", name: "Login", component: LoginPage },
+  { path: "/option-console", name: "OptionConsole", component: OptionConsole } // ✅ 추가
+]
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes,
-});
+})
 
-export default router;
+export default router
