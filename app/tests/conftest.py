@@ -1,27 +1,47 @@
 # app/tests/conftest.py
 import os
+import tempfile
 import pytest
-from app.database import database
-from app.database import models
+from fastapi.testclient import TestClient
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from app.main import app
+from app.database.database import Base, get_db
 
+@pytest.fixture(scope="function")
+def client():
+    """⚙️ 각 테스트마다 독립된 임시 DB를 생성하고, 테스트 완료 시 자동 삭제"""
+    # 1️⃣ 임시 파일 기반 SQLite DB 생성
+    db_fd, db_path = tempfile.mkstemp()
+    SQLALCHEMY_DATABASE_URL = f"sqlite:///{db_path}"
 
-@pytest.fixture(scope="function", autouse=True)
-def setup_and_teardown_db():
-    """각 테스트 전후로 users.db 초기화"""
+    # 2️⃣ SQLAlchemy 엔진 & 세션 구성
+    engine = create_engine(
+        SQLALCHEMY_DATABASE_URL,
+        connect_args={"check_same_thread": False},
+    )
+    TestingSessionLocal = sessionmaker(
+        autocommit=False, autoflush=False, bind=engine
+    )
 
-    # ✅ 항상 app 디렉토리 내부의 users.db를 대상으로 함
-    db_path = os.path.join(os.path.dirname(__file__), "..", "users.db")
-    db_path = os.path.abspath(db_path)
+    # 3️⃣ DB 스키마 생성
+    Base.metadata.create_all(bind=engine)
 
-    # 테스트 시작 전에 DB 제거
-    if os.path.exists(db_path):
-        os.remove(db_path)
+    # 4️⃣ 의존성 주입 오버라이드
+    def override_get_db():
+        db = TestingSessionLocal()
+        try:
+            yield db
+        finally:
+            db.close()
 
-    # 새 DB 생성
-    models.Base.metadata.create_all(bind=database.engine)
+    app.dependency_overrides[get_db] = override_get_db
 
-    yield  # 👈 테스트 실행 시점
+    # 5️⃣ FastAPI 테스트 클라이언트 생성
+    test_client = TestClient(app)
 
-    # 테스트 끝난 후 DB 제거
-    if os.path.exists(db_path):
-        os.remove(db_path)
+    yield test_client
+
+    # 6️⃣ 테스트 종료 후 DB 정리
+    os.close(db_fd)
+    os.unlink(db_path)

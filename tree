@@ -1,10 +1,33 @@
 app/
-├─ main.py
-├─ database.py
-├─ models.py
-├─ schemas.py
-└─ auth/
+├─ database/
+   ├─__init__.py
+   ├─ database.py
+   ├─ models.py
+   ├─ schemas.py
+   └─ users.db
+├─ board/
+   ├─__init__.py
+   ├─ models.py
+   ├─ routes.py
+   ├─ schemas.py
+   └─ service.py
+├─ tests/
+   ├─__init__.py
+   ├─ conftest.py
+   └─ test_auth.py
+├─ webhook/
+   ├─__init__.py
+   ├─ models.py
+   ├─ routes.py
+   ├─ schemas.py
+   └─ service.py
+├─ auth/
    ├─__init__.py
    ├─ routes.py
    ├─ service.py
    └─ jwt_handler.py
+├─__init__.py
+├─ main.py
+├─ users.db
+└─ utils.py
+
